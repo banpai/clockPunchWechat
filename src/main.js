@@ -6,6 +6,7 @@ import 'babel-polyfill'
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import store from './store'
 // 移动端点击300毫秒延迟
 import fastclick from 'fastclick'
 fastclick.attach(document.body)
@@ -18,6 +19,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   components: { App }
 })

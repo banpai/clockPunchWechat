@@ -3,7 +3,7 @@
     <!--头部 start-->
     <div class="head" v-bind:style="{ backgroundImage: 'url(' + image + ')' }">
       <div class="text">
-        <div class="txt_right"><span v-text="title"></span>天</div>
+        <div class="txt_right" style="display: none;"><span v-text="title"></span>天</div>
         <div class="txt_left">
           <div class="txt_1" v-text="subtitle">智新会21天早起计划</div>
           <div class="txt_2"><span v-text="nowtime"></span>开始</div>
@@ -12,7 +12,7 @@
     </div>
     <!--头部 end-->
     <!--富文本编辑内容 start-->
-    <div class="center" v-html= "contant"></div>
+    <div class="center" v-html="contant"></div>
     <!--TODO 差一个如果后台没有编辑数据的情况-->
     <!--富文本编辑内容 end-->
     <!--尾部 start-->
@@ -51,20 +51,22 @@
         var vm = this;
         getProjectData().then(res => {
           console.log(res)
-          if (res.contant) {
-            vm.contant = res.contant;
-          }
-          if (res.title) {
-            vm.title = res.title;
-          }
-          if (res.subtitle) {
-            vm.subtitle = res.subtitle;
-          }
-          if (res.nowtime) {
-            vm.nowtime = res.nowtime;
-          }
-          if (res.image) {
-            vm.image = res.host + res.image;
+          if (res) {
+            if (res.contant) {
+              vm.contant = res.contant;
+            }
+            if (res.title) {
+              vm.title = res.title;
+            }
+            if (res.subtitle) {
+              vm.subtitle = res.subtitle;
+            }
+            if (res.nowtime) {
+              vm.nowtime = res.nowtime;
+            }
+            if (res.image) {
+              vm.image = res.host + res.image;
+            }
           }
         })
       },

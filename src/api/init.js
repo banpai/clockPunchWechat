@@ -2,6 +2,7 @@ import axios from 'axios'
 import { host } from './config'
 import weui from 'weui.js'
 import router from './../router'
+import store from './../store'
 
 // 获取地址上的参数
 function getQueryString(name) {
@@ -12,15 +13,15 @@ function getQueryString(name) {
 }
 
 // 封装参数
-function changeData(date) {
+function changeData(data) {
   var code = getQueryString('code')
   var openid = '';
   if (localStorage.getItem('openid')) {
     openid = localStorage.getItem('openid')
     data.openid = openid
     data.code = code
-    date.baseurl = location.href.split('#')[0]
-    return Promise.resolve(date)
+    data.baseurl = location.href.split('#')[0]
+    return Promise.resolve(data)
   } else {
     router.replace('/loading')
   }
@@ -30,7 +31,7 @@ function changeData(date) {
 // 获取jssd初始化接口
 export function getJssdk() {
   var url = host + '/api/clockPunch/jssdk'
-  changeData({}).then(data => {
+  return changeData({}).then(data => {
     var loading = weui.loading('加载中……', {
       className: 'custom-classname'
     });
@@ -46,7 +47,7 @@ export function getJssdk() {
 // 初始化列表接口
 export function discList() {
   var url = host + '/api/clockPunch/discList'
-  changeData({}).then(data => {
+  return changeData({}).then(data => {
     return axios.post(url, data).then((res) => {
       return Promise.resolve(res.data)
     })
@@ -81,15 +82,23 @@ export function getProjectData() {
     loading.hide(function () {
       console.log('`loading` has been hidden');
     });
-    res.data.host = host;
-    return Promise.resolve(res.data)
+    console.log(res)
+    if(res.data.error_code === 60002){
+      // 没有配置数据，跳转404页面
+      console.log(res.data.msg)
+      store.state.msg = res.data.msg
+      router.replace('/error')
+    }else{
+      res.data.host = host;
+      return Promise.resolve(res.data)
+    }
   })
 }
 
 // 点击我要参加该活动，添加数据
 export function joinProject() {
   var url = host + '/api/clockPunch/joinProject'
-  changeData({}).then(data => {
+  return changeData({}).then(data => {
     var loading = weui.loading('参加中……', {
       className: 'custom-classname'
     });
@@ -100,13 +109,12 @@ export function joinProject() {
       return Promise.resolve(res.data)
     })
   })
-
 }
 
 // 点击打卡接口
 export function punchDay() {
   var url = host + '/api/clockPunch/punchDay'
-  changeData({}).then(data => {
+  return changeData({}).then(data => {
     var loading = weui.loading('打卡中……', {
       className: 'custom-classname'
     });
@@ -122,7 +130,7 @@ export function punchDay() {
 // 点击点赞接口
 export function likeDay(o) {
   var url = host + '/api/clockPunch/likeDay'
-  changeData({}).then(data => {
+  return changeData({}).then(data => {
     data.otheropenid = o
     var loading = weui.loading('点赞中……', {
       className: 'custom-classname'
@@ -139,7 +147,7 @@ export function likeDay(o) {
 // 初始化打卡数据页面的接口
 export function punchInit() {
   var url = host + '/api/clockPunch/punchInit'
-  changeData({}).then(data => {
+  return changeData({}).then(data => {
     var userInfoFlag = false;
     if (localStorage.getItem('userInfo')) {
       userInfoFlag = true;
@@ -160,7 +168,7 @@ export function punchInit() {
 // 点击提醒
 export function warnTip(m) {
   var url = host + '/api/clockPunch/warn'
-  changeData(m).then(data => {
+  return changeData(m).then(data => {
     var userInfoFlag = false;
     if (localStorage.getItem('userInfo')) {
       userInfoFlag = true;
@@ -181,7 +189,7 @@ export function warnTip(m) {
 // 点击发送邀请卡
 export function sendInvitationCard(m) {
   var url = host + '/api/clockPunch/sendInvitationCard'
-  changeData(m).then(data => {
+  return changeData(m).then(data => {
     var userInfoFlag = false;
     if (localStorage.getItem('userInfo')) {
       userInfoFlag = true;
@@ -196,7 +204,7 @@ export function sendInvitationCard(m) {
 // 点击发送打卡图
 export function sendPunchCard(m) {
   var url = host + '/api/clockPunch/sendPunchCard'
-  changeData(m).then(data => {
+  return changeData(m).then(data => {
     var userInfoFlag = false;
     if (localStorage.getItem('userInfo')) {
       userInfoFlag = true;
@@ -211,7 +219,7 @@ export function sendPunchCard(m) {
 // 测试调用微信服务器的接口
 export function sendTest(data) {
   var url = host + '/api/clockPunch/sendImg';
-  changeData(m).then(data => {
+  return changeData(m).then(data => {
     var userInfoFlag = false;
     if (localStorage.getItem('userInfo')) {
       userInfoFlag = true;
