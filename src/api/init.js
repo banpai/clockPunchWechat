@@ -217,7 +217,7 @@ export function sendPunchCard(m) {
 }
 
 // 测试调用微信服务器的接口
-export function sendTest(data) {
+export function sendTest(m) {
   var url = host + '/api/clockPunch/sendImg';
   return changeData(m).then(data => {
     var userInfoFlag = false;

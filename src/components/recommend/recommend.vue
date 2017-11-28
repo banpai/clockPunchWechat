@@ -295,6 +295,7 @@
               if (res.err_code === 0 || res.err_code === 2) {
                 weui.toast("打卡成功", 3000);
                 this.punchstatue = "已打卡";
+                this.discList = [];
                 this.list();
               }
               if (res.createTime) {
@@ -382,9 +383,6 @@
                   loading.hide(function() {
                     console.log('`loading` has been hidden');
                   });
-                  loading.hide(function() {
-                    console.log('`loading` has been hidden');
-                  });
                   if (r.errcode === 0) {
                     weui.confirm('邀请卡已发送至公众号,是否返回公众号查看？', {
                       title: '生成邀请卡',
@@ -409,7 +407,14 @@
                 this.actionFlag = true
               });
             } else {
-              weui.topTips("服务器获取数据错误。");
+              loading.hide(function() {
+                console.log('`loading` has been hidden');
+              });
+              if (res.msg) {
+                weui.topTips(res.msg);
+              } else {
+                weui.topTips("服务器获取数据错误。");
+              }
               this.actionFlag = true
             }
           });
@@ -467,7 +472,14 @@
                   this.actionFlag = true
                 });
               } else {
-                weui.topTips("服务器获取数据错误。");
+                loading.hide(function() {
+                  console.log('`loading` has been hidden');
+                });
+                if (res.msg) {
+                  weui.topTips(res.msg);
+                } else {
+                  weui.topTips("服务器获取数据错误。");
+                }
                 this.actionFlag = true
               }
             });
