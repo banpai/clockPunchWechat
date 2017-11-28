@@ -387,21 +387,21 @@
                   });
                   if (r.errcode === 0) {
                     weui.confirm('邀请卡已发送至公众号,是否返回公众号查看？', {
-                        title: '生成邀请卡',
-                        buttons: [{
-                          label: '取消',
-                          type: 'default',
-                          onClick: function() {
-                            console.log('no')
-                          }
-                        }, {
-                          label: '确定',
-                          type: 'primary',
-                          onClick: function() {
-                            WeixinJSBridge.call('closeWindow');
-                          }
-                        }]
-                      });
+                      title: '生成邀请卡',
+                      buttons: [{
+                        label: '取消',
+                        type: 'default',
+                        onClick: function() {
+                          console.log('no')
+                        }
+                      }, {
+                        label: '确定',
+                        type: 'primary',
+                        onClick: function() {
+                          WeixinJSBridge.call('closeWindow');
+                        }
+                      }]
+                    });
                   } else {
                     weui.topTips("生成失败");
                   }
